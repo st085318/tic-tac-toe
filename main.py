@@ -30,8 +30,8 @@ class TicTacToe(object):
             self.cross_name = name_second_player
             self.circle_name = name_first_player
             self.current_player = 1
-        print("Cross - " + self.cross_name)
-        print("Circle - " + self.circle_name)
+        print("First turn cross - " + self.cross_name)
+        print("second turn circle - " + self.circle_name)
 
     def make_turn(self, x_coordinate, y_coordinate):
         try:
@@ -47,7 +47,7 @@ class TicTacToe(object):
         except PlaceOfMoveException as pme:
             print(pme.txt)
 
-    def is_win(self):
+    def who_win(self):
         cross_win = False
         circle_win = False
         for i in range(0, 2):
@@ -85,15 +85,15 @@ class TicTacToe(object):
         return self.winner
 
     def is_final(self):
-        self.is_win()
-        is_end = "NOT END"
+        self.who_win()
+        is_end = False
         is_full = True
         for x in range(0, 2):
             for y in range(0, 2):
                 if self.field[x][y] == -1:
                     is_full = False
         if self.winner != "Nobody" or is_full:
-            is_end = "END"
+            is_end = True
         return is_end
 
     def whose_turn(self):
@@ -101,18 +101,21 @@ class TicTacToe(object):
             return self.cross_name
         return self.circle_name
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    ttt = TicTacToe("IVAN", "QWER")
-    ttt.make_turn(1, 1)
-    ttt.make_turn(2, 2)
-    ttt.make_turn(1, 2)
-    print(ttt.is_final())
-    print(ttt.is_win())
-    ttt.make_turn(2, 1)
-    ttt.make_turn(1, 3)
-    ttt.make_turn(2, 3)
-    print(ttt.is_final())
-    print(ttt.is_win())
+    def print_field(self):
+        field = [[-1]*3, [-1]*3, [-1]*3]
+        for y in range(3):
+            for x in range(3):
+                if self.field[2-y][x] == -1:
+                    field[y][x] = " "
+                elif self.field[2-y][x] == 1:
+                    field[y][x] = "X"
+                else:
+                    field[y][x] = 0
+        print("---------")
+        for y in range(3):
+                print(str(field[y][0]) + " | " + str(field[y][1]) + " | " + str(field[y][2]))
+                print("---------")
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+if __name__ == '__main__':
+
