@@ -47,7 +47,7 @@ class TicTacToe(object):
     def who_win(self):
         cross_win = False
         circle_win = False
-        for i in range(0, 3):
+        for i in range(0, 3):  # check winning situations
             if self.field[0][i] == self.field[1][i] and self.field[0][i] == self.field[2][i]:
                 if self.field[0][i] == 1:
                     cross_win = True
@@ -122,9 +122,6 @@ if __name__ == '__main__':
     print("please, input name of second player")
     second_player_name = input()
     tic_tac_toe_game = TicTacToe(first_player_name, second_player_name)
-    parser = argparse.ArgumentParser(description='turn')
-    parser.add_argument('x', type=str, help='Input dir for videos')
-    parser.add_argument('y', type=str, help='Output dir for image')
     while not tic_tac_toe_game.is_final():
         print(str(tic_tac_toe_game.whose_turn()) + " plaese, input coordinates for turn")
         try:
@@ -132,4 +129,4 @@ if __name__ == '__main__':
             tic_tac_toe_game.print_field()
         except ValueError:
             print("Input error - coordinates are two integer from 1 to 3 in two lines(1 number 1 line)")
-    print(str(tic_tac_toe_game.who_win()) + " win")
+    print(str(tic_tac_toe_game.who_win()) + " wins")
