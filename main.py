@@ -1,10 +1,7 @@
 from random import *
+import argparse
 
 
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 class PlaceOfMoveException(Exception):
     def __init__(self):
         self.txt = "ERROR You make turn into occupied field"
@@ -50,13 +47,13 @@ class TicTacToe(object):
     def who_win(self):
         cross_win = False
         circle_win = False
-        for i in range(0, 2):
-            if self.field[0][i] == self.field[1][i] == self.field[2][i]:
+        for i in range(0, 3):
+            if self.field[0][i] == self.field[1][i] and self.field[0][i] == self.field[2][i]:
                 if self.field[0][i] == 1:
                     cross_win = True
                 if self.field[0][i] == 0:
                     circle_win = True
-            if self.field[i][0] == self.field[i][1] == self.field[i][2]:
+            if self.field[i][0] == self.field[i][1] and self.field[i][0] == self.field[i][2]:
                 if self.field[i][0] == 1:
                     cross_win = True
                 if self.field[i][0] == 0:
@@ -75,6 +72,7 @@ class TicTacToe(object):
             if not cross_win and not circle_win:
                 self.winner = "Nobody"
             elif cross_win and circle_win:
+                self.winner = "Both"
                 raise SkippedEndException()
             elif circle_win:
                 self.winner = self.circle_name
@@ -88,11 +86,11 @@ class TicTacToe(object):
         self.who_win()
         is_end = False
         is_full = True
-        for x in range(0, 2):
-            for y in range(0, 2):
+        for x in range(0, 3):
+            for y in range(0, 3):
                 if self.field[x][y] == -1:
                     is_full = False
-        if self.winner != "Nobody" or is_full:
+        if (self.winner != "Nobody") or is_full:
             is_end = True
         return is_end
 
@@ -118,4 +116,20 @@ class TicTacToe(object):
 
 
 if __name__ == '__main__':
-
+    turn = 0
+    print("please, input name of first player")
+    first_player_name = input()
+    print("please, input name of second player")
+    second_player_name = input()
+    tic_tac_toe_game = TicTacToe(first_player_name, second_player_name)
+    parser = argparse.ArgumentParser(description='turn')
+    parser.add_argument('x', type=str, help='Input dir for videos')
+    parser.add_argument('y', type=str, help='Output dir for image')
+    while not tic_tac_toe_game.is_final():
+        print(str(tic_tac_toe_game.whose_turn()) + " plaese, input coordinates for turn")
+        try:
+            tic_tac_toe_game.make_turn(int(input()), int(input()))
+            tic_tac_toe_game.print_field()
+        except ValueError:
+            print("Input error - coordinates are two integer from 1 to 3 in two lines(1 number 1 line)")
+    print(str(tic_tac_toe_game.who_win()) + " win")
